@@ -1,25 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
+import useLifecycleLogger from '../hooks/useLifecycleLogger';
 
 const LifecycleVisualizer = ({ addLog }) => {
   const [count, setCount] = useState(0);
-  const isMounted = useRef(false);
 
-  // Montage
-  useEffect(() => {
-    addLog('🟢 Composant monté');
-    isMounted.current = true;
-
-    return () => {
-      addLog('🔴 Composant démonté');
-    };
-  }, []);
-
-  // Mise à jour
-  useEffect(() => {
-    if (isMounted.current && count !== 0) {
-      addLog(`🟠 Composant mis à jour (count: ${count})`);
-    }
-  }, [count]);
+  // ✅ Utilisation du hook personnalisé pour loguer le cycle de vie
+  useLifecycleLogger('LifecycleVisualizer', addLog, [count]);
 
   return (
     <div className="p-6 bg-white shadow rounded">
